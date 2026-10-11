@@ -1,7 +1,7 @@
 use rand::Rng;
 use rand::SeedableRng;
 use rand::rngs::StdRng;
-use std::io::Write;
+use std::io::{self, Write};
 
 const START_GOLD: u64 = 100;
 const FOOD_PRICE: u64 = 5;
@@ -85,7 +85,74 @@ fn print_status(gold: u64, food: u64, day: u64) {
     println!("--------------");
 }
 
-
 fn main() {
-    println!("Hello, world!");
+    println!("Welcome to Trail Trader!");
+    let seed = read_number(1, MAX_SEED);
+
+    let mut gold = START_GOLD;
+    let mut food = 0;
+    let mut day = 1;
+    let mut roll_count = 0;
+
+    loop {
+        print_menu();
+        let choice = read_number(1, 5);
+
+        match choice {
+            1 => {
+                if !can_afford(gold, FOOD_PRICE) {
+                    println!(
+                        "You don't have enough gold to buy food! (Need at least {} gold)",
+                        FOOD_PRICE
+                    );
+                } else {
+                    let max_affordable = gold / FOOD_PRICE;
+                    println!("You can afford up to {} units of food.", max_affordable);
+                    println!("How many units of food would you like to buy?");
+                    let units = read_number(1, max_affordable);
+
+                    let cost = units * FOOD_PRICE;
+                    gold -= cost;
+                    food += units;
+                    day += 1;
+                    println!(
+                        "Successfully bought {} units of food for {} gold.",
+                        units, cost
+                    );
+                }
+            }
+            2 => {
+                let roll = roll_die(seed + roll_count);
+                roll_count += 1;
+                let gained = hunt_food(roll);
+                food += gained;
+                day += 1;
+                println!(
+                    "You went hunting and rolled a {}. Gained {} units of food!",
+                    roll, gained
+                );
+            }
+            3 => {
+                let total_rolled = roll_many(seed + roll_count, 3);
+                roll_count += 3;
+                let earned = 2 * total_rolled;
+                gold += earned;
+                day += 1;
+                println!(
+                    "Traded with caravan! Total dice sum: {}. Earned {} gold!",
+                    total_rolled, earned
+                );
+            }
+            4 => {
+                print_status(gold, food, day);
+            }
+            5 => {
+                println!("\nQuitting game. Final Status:");
+                print_status(gold, food, day);
+                println!("Thanks for playing Trail Trader!");
+                break;
+            }
+            _ => unreachable!(),
+        }
+    }
 }
