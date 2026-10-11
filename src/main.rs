@@ -73,7 +73,9 @@ fn hunt_food(roll: u64) -> u64 {
     }
 }
 
-
+fn can_afford(gold: u64, cost: u64) -> bool {
+    gold >= cost
+}
 
 fn main() {
     println!("Hello, world!");
