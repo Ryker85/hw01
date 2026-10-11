@@ -3,7 +3,6 @@ use rand::SeedableRng;
 use rand::rngs::StdRng;
 use std::io::Write;
 
-
 const START_GOLD: u64 = 100;
 const FOOD_PRICE: u64 = 5;
 const MAX_SEED: u64 = 9999;
@@ -52,6 +51,14 @@ fn roll_die(seed: u64) -> u64 {
     let mut rng = StdRng::seed_from_u64(seed);
     rng.random_range(1..=6)
 }
+fn roll_many(seed: u64, count: u64) -> u64 {
+    let mut total = 0;
+    for i in 0..count {
+        total += roll_die(seed + i);
+    }
+    total
+}
+
 fn main() {
     println!("Hello, world!");
 }
