@@ -77,6 +77,15 @@ fn can_afford(gold: u64, cost: u64) -> bool {
     gold >= cost
 }
 
+fn print_status(gold: u64, food: u64, day: u64) {
+    println!("\n--- Status ---");
+    println!("Day: {}", day);
+    println!("Gold: {}", gold);
+    println!("Food: {} units", food);
+    println!("--------------");
+}
+
+
 fn main() {
     println!("Hello, world!");
 }
