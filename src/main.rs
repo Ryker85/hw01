@@ -59,6 +59,22 @@ fn roll_many(seed: u64, count: u64) -> u64 {
     total
 }
 
+fn hunt_food(roll: u64) -> u64 {
+    if roll == 1 {
+        0
+    } else if roll == 2 || roll == 3 {
+        10
+    } else if roll == 4 || roll == 5 {
+        20
+    } else if roll == 6 {
+        40
+    } else {
+        0
+    }
+}
+
+
+
 fn main() {
     println!("Hello, world!");
 }
